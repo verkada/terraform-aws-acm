@@ -34,6 +34,12 @@ variable "subject_alternative_names" {
   default     = []
 }
 
+variable "alternate_zone_ids" {
+  description = "Maps a domain name to a zone id if if the zone_id should not be used."
+  type        = map(string)
+  default     = {}
+}
+
 variable "validation_method" {
   description = "Which method to use for validation. DNS or EMAIL are valid, NONE can be used for certificates that were imported into ACM and then into Terraform."
   type        = string
