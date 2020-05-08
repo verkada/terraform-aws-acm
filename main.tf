@@ -21,7 +21,7 @@ resource "aws_acm_certificate" "this" {
 }
 
 resource "aws_route53_record" "validation" {
-  count = var.create_certificate && var.validation_method == "DNS" && var.validate_certificate ? length(local.validation_domains) : 0
+  count = var.create_certificate && var.validation_method == "DNS" && var.validate_certificate ? length(local.distinct_domain_names) : 0
 
   zone_id = lookup(var.alternate_zone_ids, local.distinct_domain_names[count.index], var.zone_id)
   name    = local.validation_domains[count.index]["resource_record_name"]
