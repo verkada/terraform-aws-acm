@@ -18,6 +18,8 @@ resource "aws_acm_certificate" "this" {
 
   lifecycle {
     create_before_destroy = true
+    # https://github.com/terraform-providers/terraform-provider-aws/issues/8531
+    ignore_changes = [subject_alternative_names]
   }
 }
 
