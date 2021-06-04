@@ -3,7 +3,8 @@ locals {
   distinct_domain_names = distinct([for s in concat([var.domain_name], var.subject_alternative_names) : replace(s, "*.", "")])
 
   // Copy domain_validation_options for the distinct domain names
-  domain_validation_options = { for k, v in aws_acm_certificate.this[0].domain_validation_options : replace(v.domain_name, "*.", "") => tomap(v) }
+  domain_validation_options_all = { for k, v in aws_acm_certificate.this[0].domain_validation_options : replace(v.domain_name, "*.", "") => tomap(v)... }
+  domain_validation_options = { for k, v in local.domain_validation_options_all: k => v[0] }
   validation_domains        = var.create_certificate ? [for fqdn in local.distinct_domain_names : merge(local.domain_validation_options[fqdn], { "fqdn" = fqdn }) if lookup(local.domain_validation_options, fqdn, null) != null] : []
 }
 
